@@ -15,7 +15,7 @@ class NukeBot(object):
 			for page in self.refInfo:
 				if page.Title == check.Title:
 					found = True
-					if page.sha1 != check.sha1:
+					if page.Revision.sha1 != check.Revision.sha1:
 						self.update(check)
 			if found != True:
 				self.refInfo.append(check)
@@ -29,19 +29,19 @@ class NukeBot(object):
 		self.refInfo = []
 		self.err = False
 		for page in self.gen:
-			list.append(page.Revision)
+			list.append(page)
 		return list
 		
 	def update(self,file):
 		updateList = []
-		for page in self.refList:
+		for page in self.refInfo:
 			if page.Title == file.Title:
 				updateList.append(file)
 				tweet(file)
 			else:
 				updateList.append(page)
-		self.refList = []
-		self.refList = updateList
+		self.refInfo = []
+		self.refInfo = updateList
 
 # Tweet your shit		
 def tweet(edit):
