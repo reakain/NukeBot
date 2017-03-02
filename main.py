@@ -50,7 +50,10 @@ def tweet(edit):
 	api = tweepy.API(auth)
 	
 	status = makeStatus(edit)
-	api.update_status(status)
+    try:
+		api.update_status(status)
+    except api.TweepError as e:
+        print(e.reason)
 
 # Make the twitter status to tweet
 def makeStatus(edit):
