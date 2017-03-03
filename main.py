@@ -37,7 +37,8 @@ class NukeBot(object):
 		for page in self.refInfo:
 			if page.Title == file.Title:
 				updateList.append(file)
-				tweet(file)
+                print(file.Title)
+				%tweet(file)
 			else:
 				updateList.append(page)
 		self.refInfo = []
