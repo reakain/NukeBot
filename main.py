@@ -1,6 +1,6 @@
 import pywikibot
 from pywikibot import pagegenerators
-import tweepy
+#import tweepy
 		
 # My baby bot
 class NukeBot(object):
@@ -26,35 +26,35 @@ class NukeBot(object):
 		self.site = pywikibot.Site()
 		self.cat = pywikibot.Category(self.site,'Category:Nuclear power')
 		self.gen = pagegenerators.CategorizedPageGenerator(self.cat)
-		self.refInfo = []
 		self.err = False
+		someList = []
 		for page in self.gen:
-			list.append(page)
-		return list
+			someList.append(page)
+		return someList
 		
 	def update(self,file):
 		updateList = []
 		for page in self.refInfo:
 			if page.Title == file.Title:
 				updateList.append(file)
-                print(file.Title)
-				%tweet(file)
+                #print(str(file.Title))
+				#tweet(file)
 			else:
 				updateList.append(page)
 		self.refInfo = []
 		self.refInfo = updateList
 
-# Tweet your shit		
-def tweet(edit):
-	auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-	auth.set_access_token(access_token, access_token_secret)
-	api = tweepy.API(auth)
+# Tweet your shit
+#def tweet(edit):
+#	auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+#	auth.set_access_token(access_token, access_token_secret)
+#	api = tweepy.API(auth)
 	
-	status = makeStatus(edit)
-    try:
-		api.update_status(status)
-    except api.TweepError as e:
-        print(e.reason)
+#	status = makeStatus(edit)
+#	try:
+#		api.update_status(status)
+#	except api.TweepError as e:
+#		print(e.reason)
 
 # Make the twitter status to tweet
 def makeStatus(edit):
@@ -66,10 +66,9 @@ def makeStatus(edit):
 def main():
 	
 	bot = NukeBot()
-		
-		
+
 if __name__ == "__main__":
-    try:
-        main()
-    finally:
-        pywikibot.stopme()
+	try:
+		main()
+	finally:
+		pywikibot.stopme()
