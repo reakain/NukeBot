@@ -32,7 +32,6 @@ class NukeBot(object):
 	def makeList(self):
 		self.site = pywikibot.Site()
 		self.cat = pywikibot.Category(self.site,'Category:Nuclear power')
-		self.cat = pywikibot.Category(self.site,'Category:Wikipedia editing aids')
 		self.gen = pagegenerators.CategorizedPageGenerator(self.cat)
 		self.err = False
 		someList = []
