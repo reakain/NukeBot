@@ -1,21 +1,28 @@
 import pywikibot
 from pywikibot import pagegenerators
-#import tweepy
+import itertools
+import tweepy
 		
 # My baby bot
 class NukeBot(object):
 	def __init__(self):
 		self.refInfo = self.makeList()
+		count = 0
 		while True:
 			self.listen()
+			count = count+1
+			print(count)
 	
 	def listen(self):
 		checkList = self.makeList()
 		for check in checkList:
 			for page in self.refInfo:
-				if page.Title == check.Title:
+				if page.title == check.title:
 					found = True
-					if page.Revision.sha1 != check.Revision.sha1:
+					#print(itertools.islice(page.revisions(),1)._sha1)
+					#print(next(page.revisions()).revid)
+					#print(next(check.revisions()).revid)
+					if next(page.revisions()).revid != next(check.revisions()).revid:
 						self.update(check)
 			if found != True:
 				self.refInfo.append(check)
@@ -25,9 +32,14 @@ class NukeBot(object):
 	def makeList(self):
 		self.site = pywikibot.Site()
 		self.cat = pywikibot.Category(self.site,'Category:Nuclear power')
+		self.cat = pywikibot.Category(self.site,'Category:Wikipedia editing aids')
 		self.gen = pagegenerators.CategorizedPageGenerator(self.cat)
 		self.err = False
 		someList = []
+		for page in self.gen:
+			someList.append(page)
+		self.cat = pywikibot.Category(self.site,'Category:Nuclear technology')
+		self.gen = pagegenerators.CategorizedPageGenerator(self.cat)
 		for page in self.gen:
 			someList.append(page)
 		return someList
@@ -35,9 +47,9 @@ class NukeBot(object):
 	def update(self,file):
 		updateList = []
 		for page in self.refInfo:
-			if page.Title == file.Title:
+			if page.title == file.title:
 				updateList.append(file)
-                #print(str(file.Title))
+				print(file.title)
 				#tweet(file)
 			else:
 				updateList.append(page)
@@ -45,21 +57,21 @@ class NukeBot(object):
 		self.refInfo = updateList
 
 # Tweet your shit
-#def tweet(edit):
-#	auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-#	auth.set_access_token(access_token, access_token_secret)
-#	api = tweepy.API(auth)
+def tweet(edit):
+	auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+	auth.set_access_token(access_token, access_token_secret)
+	api = tweepy.API(auth)
 	
-#	status = makeStatus(edit)
-#	try:
-#		api.update_status(status)
-#	except api.TweepError as e:
-#		print(e.reason)
+	status = makeStatus(edit)
+	try:
+		api.update_status(status)
+	except api.TweepError as e:
+		print(e.reason)
 
 # Make the twitter status to tweet
 def makeStatus(edit):
-	title = edit.Title
-	url = edit.Url
+	title = edit.title
+	url = edit.url
 	
 	
 
